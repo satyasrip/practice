@@ -19,6 +19,16 @@ public class SnakeMinMoves {
         SnakePos.setGrid(grid);
         SnakePos initialPos = new SnakePos(0, 0, false);
         initialPos.printGrid();
+        SnakePos next;
+        if((next=initialPos.moveAntiClockWise())!=null)
+            next.printGrid();
+        if((next=initialPos.moveClockWise())!=null)
+            next.printGrid();
+        if((next=initialPos.moveHorizontal())!=null)
+            next.printGrid();
+        if((next=initialPos.moveVertical())!=null)
+            next.printGrid();
+
         return res;
     }
 }
@@ -57,7 +67,7 @@ class SnakePos {
             }
             System.out.println();
         }
-
+        System.out.println("-----------");
     }
 
     public SnakePos moveHorizontal() {
@@ -65,14 +75,13 @@ class SnakePos {
             int headY = y + 1;
             int nextY = headY + 1;
             if (isValidMove(x, nextY))
-                return new SnakePos(x, nextY, false);
+                return new SnakePos(x, headY, false);
             else
                 return null;
         } else {
-            int headX = x + 1;
             int nextY = y + 1;
-            if (isValidMove(x, nextY) && isValidMove(headX, nextY))
-                return new SnakePos(x, y + 1, true);
+            if (isValidMove(x, nextY) && isValidMove(x+1, nextY))
+                return new SnakePos(x, nextY, true);
             else
                 return null;
         }
@@ -83,7 +92,7 @@ class SnakePos {
             int headX = x + 1;
             int nextX = headX + 1;
             if (isValidMove(nextX, y)) {
-                return new SnakePos(nextX, y, true);
+                return new SnakePos(headX, y, true);
             } else
                 return null;
         } else {
@@ -92,6 +101,26 @@ class SnakePos {
                 return new SnakePos(nextX, y, false);
             } else return null;
         }
+    }
+
+    public SnakePos moveClockWise() {
+        if (isVertical)
+            return null;
+        int nextX = x + 1;
+        if (isValidMove(nextX, y) && isValidMove(nextX, y + 1)) {
+            return new SnakePos(x, y, true);
+        } else
+            return null;
+    }
+
+    public SnakePos moveAntiClockWise() {
+        if (!isVertical)
+            return null;
+        int nextY = y + 1;
+        if (isValidMove(x, nextY) && isValidMove(x + 1, nextY)) {
+            return new SnakePos(x, y, false);
+        } else
+            return null;
     }
 
     private boolean isValidMove(int x, int y) {
