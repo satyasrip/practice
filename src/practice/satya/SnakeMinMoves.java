@@ -31,7 +31,7 @@ class SnakePos {
     }
 
     int x, y; // (x,y) are position of tail// so head will be in (x+1,y) when isVertical is true else (x,y+1)
-    boolean isVertical; // = true
+    boolean isVertical; //
 
     public SnakePos(int tailX, int tailY, boolean isVertical) {
         this.x = tailX;
@@ -50,13 +50,53 @@ class SnakePos {
             for (int j = 0; j < grid[i].length; j++) {
                 if (i == x && j == y) {
                     System.out.print("T" + " ");
-                } else
-                if (i == hx && j == hy) {
+                } else if (i == hx && j == hy) {
                     System.out.print("H" + " ");
                 } else
                     System.out.print(grid[i][j] + " ");
             }
             System.out.println();
         }
+
+    }
+
+    public SnakePos moveHorizontal() {
+        if (!isVertical) {
+            int headY = y + 1;
+            int nextY = headY + 1;
+            if (isValidMove(x, nextY))
+                return new SnakePos(x, nextY, false);
+            else
+                return null;
+        } else {
+            int headX = x + 1;
+            int nextY = y + 1;
+            if (isValidMove(x, nextY) && isValidMove(headX, nextY))
+                return new SnakePos(x, y + 1, true);
+            else
+                return null;
+        }
+    }
+
+    public SnakePos moveVertical() {
+        if (isVertical) {
+            int headX = x + 1;
+            int nextX = headX + 1;
+            if (isValidMove(nextX, y)) {
+                return new SnakePos(nextX, y, true);
+            } else
+                return null;
+        } else {
+            int nextX = x + 1;
+            if (isValidMove(nextX, y) && isValidMove(nextX, y + 1)) {
+                return new SnakePos(nextX, y, false);
+            } else return null;
+        }
+    }
+
+    private boolean isValidMove(int x, int y) {
+        if (x >= 0 && x < grid.length && y >= 0 && y < grid[x].length && grid[x][y] == 0)
+            return true;
+        return false;
     }
 }
