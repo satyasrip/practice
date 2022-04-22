@@ -16,7 +16,7 @@ public class SnakeMinMoves {
 
     public int minimumMoves(int[][] grid) {
         int res = 0;
-        SnakePos initialPos = new SnakePos(0,0,false);
+        SnakePos initialPos = new SnakePos(0, 0, false);
         initialPos.printGrid(grid);
         return res;
     }
@@ -35,7 +35,10 @@ class SnakePos {
     public void printGrid(int[][] grid) {
         for (int i = 0; i < grid.length; i++) {
             for (int j = 0; j < grid[i].length; j++) {
-                System.out.print(grid[i][j] + " ");
+                if (i == x && j == y) {
+                    System.out.print("T" + " ");
+                } else
+                    System.out.print(grid[i][j] + " ");
             }
             System.out.println();
         }
